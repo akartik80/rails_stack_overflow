@@ -14,14 +14,14 @@ development:
   encoding: unicode
   database: stack_overflow
   pool: 5
-  username: kartikarora
+  username: kartik
 
 test:
   adapter: postgresql
   encoding: unicode
   database: stack_overflow
   pool: 5
-  username: kartikarora
+  username: kartik
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
