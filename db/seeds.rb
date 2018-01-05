@@ -11,9 +11,13 @@ require_relative './seed_modules/seed_questions.rb'
 require_relative './seed_modules/seed_answers.rb'
 require_relative './seed_modules/seed_tags.rb'
 require_relative './seed_modules/seed_votes_and_comments.rb'
+require_relative './seed_modules/seed_questions_tags.rb'
+require_relative './seed_modules/seed_sessions.rb'
 
 SeedUsers.seed
 SeedQuestions.seed
 SeedAnswers.seed
 SeedTags.seed
 SeedVotesAndComments.seed
+SeedQuestionsTags.seed
+SeedSessions.seed
