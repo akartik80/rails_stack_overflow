@@ -52,6 +52,9 @@ ActiveRecord::Schema.define(version: 20180105142838) do
   create_table "questions_tags", id: false, force: :cascade do |t|
     t.bigint "question_id", null: false
     t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index ["question_id"], name: "index_questions_tags_on_question_id"
     t.index ["tag_id"], name: "index_questions_tags_on_tag_id"
   end
@@ -109,6 +112,8 @@ ActiveRecord::Schema.define(version: 20180105142838) do
   add_foreign_key "answers", "users"
   add_foreign_key "comments", "users"
   add_foreign_key "questions", "users"
+  add_foreign_key "questions_tags", "questions"
+  add_foreign_key "questions_tags", "tags"
   add_foreign_key "sessions", "users"
   add_foreign_key "votes", "users"
 end
