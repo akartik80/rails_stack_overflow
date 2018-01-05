@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20180104190753) do
     t.bigint "user_id", null: false
     t.text "text", null: false
     t.boolean "accepted", default: false
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_answers_on_question_id"
@@ -28,7 +29,7 @@ ActiveRecord::Schema.define(version: 20180104190753) do
 
   create_table "questions", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "text", limit: 500, null: false
+    t.text "text", null: false
     t.integer "duplicate_question_id"
     t.boolean "wiki", default: false
     t.datetime "deleted_at"
