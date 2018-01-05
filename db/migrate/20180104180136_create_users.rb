@@ -5,7 +5,7 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :email, null: false, index: { unique: true }
       t.string :password
       t.string :salt, index: { unique: true }
-      t.boolean :deleted_at
+      t.timestamp :deleted_at
 
       t.timestamps
     end
