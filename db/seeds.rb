@@ -6,9 +6,12 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-require 'bcrypt'
 require_relative './seed_modules/seed_users.rb'
 require_relative './seed_modules/seed_questions.rb'
+require_relative './seed_modules/seed_answers.rb'
+require_relative './seed_modules/seed_tags.rb'
 
 SeedUsers.seed
 SeedQuestions.seed
+SeedAnswers.seed
+SeedTags.seed

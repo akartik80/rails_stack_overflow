@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180105073651) do
+ActiveRecord::Schema.define(version: 20180105142838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,13 @@ ActiveRecord::Schema.define(version: 20180105073651) do
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
+  create_table "questions_tags", id: false, force: :cascade do |t|
+    t.bigint "question_id", null: false
+    t.bigint "tag_id", null: false
+    t.index ["question_id"], name: "index_questions_tags_on_question_id"
+    t.index ["tag_id"], name: "index_questions_tags_on_tag_id"
+  end
+
   create_table "revisions", force: :cascade do |t|
     t.string "revisionable_type", null: false
     t.bigint "revisionable_id", null: false
@@ -65,16 +72,6 @@ ActiveRecord::Schema.define(version: 20180105073651) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
-  end
-
-  create_table "tag_associations", id: false, force: :cascade do |t|
-    t.bigint "tag_id", null: false
-    t.string "taggable_type", null: false
-    t.bigint "taggable_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["tag_id"], name: "index_tag_associations_on_tag_id"
-    t.index ["taggable_type", "taggable_id"], name: "index_tag_associations_on_taggable_type_and_taggable_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -113,6 +110,5 @@ ActiveRecord::Schema.define(version: 20180105073651) do
   add_foreign_key "comments", "users"
   add_foreign_key "questions", "users"
   add_foreign_key "sessions", "users"
-  add_foreign_key "tag_associations", "tags"
   add_foreign_key "votes", "users"
 end

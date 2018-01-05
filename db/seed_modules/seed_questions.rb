@@ -3,10 +3,10 @@ module SeedQuestions
     questions = []
 
     User.all.each do |user|
-      2.times do |question_index|
+      2.times do |index|
         questions << {
           user_id: user.id,
-          text: "Question #{question_index} by #{user.id}"
+          text: "Question #{index + 1} by #{user.id}"
         }
       end
     end

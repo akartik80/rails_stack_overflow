@@ -1,11 +1,12 @@
 class Question < ApplicationRecord
-  has_many :answers
+  validates_presence_of :user, :text
+
   belongs_to :user
+
+  has_many :answers
   has_many :comments, as: :commentable
   has_many :votes, as: :votable
   has_many :revisions, as: :revisionable
-  has_many :tag_associations, as: :taggable
-  has_many :tags, through: :tag_associations
 
-  validates_presence_of :user_id, :text
+  has_and_belongs_to_many :tags
 end
