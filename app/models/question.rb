@@ -7,5 +7,5 @@ class Question < ApplicationRecord
   has_many :tag_associations, as: :taggable
   has_many :tags, through: :tag_associations
 
-  private
+  validates_presence_of :user_id, :text
 end

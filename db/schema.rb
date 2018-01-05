@@ -61,15 +61,16 @@ ActiveRecord::Schema.define(version: 20180105073651) do
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "token", null: false
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "tag_associations", id: false, force: :cascade do |t|
-    t.bigint "tag_id"
-    t.string "taggable_type"
-    t.bigint "taggable_id"
+    t.bigint "tag_id", null: false
+    t.string "taggable_type", null: false
+    t.bigint "taggable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tag_id"], name: "index_tag_associations_on_tag_id"
@@ -77,13 +78,10 @@ ActiveRecord::Schema.define(version: 20180105073651) do
   end
 
   create_table "tags", force: :cascade do |t|
-    t.string "taggable_type"
-    t.bigint "taggable_id"
     t.string "text", null: false
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["taggable_type", "taggable_id"], name: "index_tags_on_taggable_type_and_taggable_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -94,6 +92,8 @@ ActiveRecord::Schema.define(version: 20180105073651) do
     t.boolean "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["salt"], name: "index_users_on_salt", unique: true
   end
 
   create_table "votes", force: :cascade do |t|
@@ -113,5 +113,6 @@ ActiveRecord::Schema.define(version: 20180105073651) do
   add_foreign_key "comments", "users"
   add_foreign_key "questions", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "tag_associations", "tags"
   add_foreign_key "votes", "users"
 end

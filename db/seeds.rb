@@ -7,38 +7,8 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 require 'bcrypt'
+require_relative './seed_modules/seed_users.rb'
+require_relative './seed_modules/seed_questions.rb'
 
-users = [
-  {
-    name: 'Kartik',
-    email: 'kartik.arora@1mg.com',
-    password: BCrypt::Password.create('123'),
-    salt: SecureRandom.hex(20)
-  },
-
-  {
-    name: 'Viren',
-    email: 'viren.chugh@1mg.com',
-    password: BCrypt::Password.create('456'),
-    salt: SecureRandom.hex(20),
-    deleted_at: Time.now
-  },
-
-  {
-    name: 'Nipun',
-    email: 'nipun.manocha@1mg.com',
-    salt: SecureRandom.hex(20)
-  }
-]
-
-questions = []
-
-User.all.each_with_index do |user, index|
-  questions << {
-    user_id: user.id,
-    text: "Question #{index} by #{user.id}"
-  }
-end
-
-User.create(users)
-Question.create(questions)
+SeedUsers.seed
+SeedQuestions.seed
