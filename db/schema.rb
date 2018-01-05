@@ -80,4 +80,9 @@ ActiveRecord::Schema.define(version: 20180105054240) do
     t.index ["vote_type"], name: "index_votes_on_vote_type"
   end
 
+  add_foreign_key "answers", "questions"
+  add_foreign_key "answers", "users"
+  add_foreign_key "comments", "users"
+  add_foreign_key "questions", "users"
+  add_foreign_key "votes", "users"
 end
