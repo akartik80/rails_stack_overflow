@@ -1,10 +1,12 @@
 class QuestionsController < ApplicationController
+  #write attr_accessor
+  #
   def index
-    render json: Question.all, status: 200
+    render json: Question.active, status: 200
   end
 
   def show
-    render json: Question.find(params[:id]), status: 200
+    render json: Question.active.includes(:answers).find(params[:id]), status: 200
   end
 
   def create
@@ -18,7 +20,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question = Question.find(params[:id])
+    @question = Question.active.find(params[:id])
 
     if @question.update_attributes(question_params)
       render json: @question, status: 200
@@ -28,7 +30,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question = Question.find(params[:id])
+    @question = Question.active.find(params[:id])
     @question.deleted_at = Time.now
 
     if @question.save
@@ -41,6 +43,8 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:text, :user_id)
+    question_params = params.require(:question).permit(:text, :user_id)
+    question_params[:user_id] = cookies.signed[:user_id]
+    question_params
   end
 end

@@ -11,14 +11,12 @@ class SessionsController < ApplicationController
   end
 
   def check_logged_in
-    puts cookies.signed[:session_id], 12121
     @session = Session.active.find_by(token: cookies.signed[:session_id])
   end
 
   def login
     # redirect here with 302
-    return render json: @session, status: 200 if check_logged_in
-    puts '11122223333', @session
+    return render json: @session, status: 302 if check_logged_in
     create
   end
 

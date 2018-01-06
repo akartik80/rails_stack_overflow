@@ -33,6 +33,8 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:text, :user_id, :question_id)
+    answer_params = params.require(:answer).permit(:text, :user_id, :question_id)
+    answer_params[:user_id] = cookies.signed[:user_id]
+    answer_params
   end
 end
