@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: tags
+#
+#  id          :integer          not null, primary key
+#  text        :string           not null
+#  description :text
+#  deleted_at  :datetime
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 class Tag < ApplicationRecord
   validates_presence_of :text
 

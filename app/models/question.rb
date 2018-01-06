@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: questions
+#
+#  id                    :integer          not null, primary key
+#  user_id               :integer          not null
+#  text                  :text             not null
+#  duplicate_question_id :integer
+#  wiki                  :boolean          default(FALSE)
+#  deleted_at            :datetime
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
+
 class Question < ApplicationRecord
   validates_presence_of :user, :text
   after_save :create_revision

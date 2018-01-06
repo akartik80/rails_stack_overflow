@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :questions
   resources :answers, only: %i[create update destroy]
   resources :comments, only: %i[create update destroy]
+  resources :votes, only: %i[create destroy]
 
   post '/login', to: 'sessions#login'
   delete '/logout', to: 'sessions#destroy'

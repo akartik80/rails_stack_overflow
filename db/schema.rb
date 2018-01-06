@@ -108,8 +108,10 @@ ActiveRecord::Schema.define(version: 20180105142838) do
     t.bigint "votable_id", null: false
     t.bigint "user_id", null: false
     t.integer "vote_type", null: false
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_votes_on_deleted_at"
     t.index ["user_id"], name: "index_votes_on_user_id"
     t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id"
     t.index ["vote_type"], name: "index_votes_on_vote_type"

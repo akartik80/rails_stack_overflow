@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: revisions
+#
+#  id                :integer          not null, primary key
+#  revisionable_type :string           not null
+#  revisionable_id   :integer          not null
+#  metadata          :jsonb
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:

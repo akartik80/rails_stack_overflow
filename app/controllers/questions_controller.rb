@@ -1,12 +1,12 @@
 class QuestionsController < ApplicationController
   #write attr_accessor
-  #
+
   def index
     render json: Question.active, status: 200
   end
 
   def show
-    render json: Question.active.includes(:comments, answers: :comments).find(params[:id]), status: 200
+    render json: Question.active.includes(:comments, answers: :comments).find_by(id: params[:id]), status: 200
   end
 
   def create
