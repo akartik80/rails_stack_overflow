@@ -2,48 +2,46 @@ class UsersController < ApplicationController
   skip_before_action :verify_authenticity_token # will remove this
 
   def index
-    render json: User.all, status: 200
+    render json: User.active, status: 200
   end
 
   def show
-    render json: User.find(params[:id]), status: 200
+    @user = User.active.find_by(id: params[:id])
+
+    return render json: { error: 'User not found' }, status: 404 unless @user
+    render json: @user, status: 200
   end
 
   def create
     @user = User.new(user_params)
-    @user.salt = SecureRandom.hex(20)
+    puts @user
 
-    if @user.save
-      render json: @user, status: 201
-    else
-      render json: @user.errors, status: 500
-    end
+    return render json: @user.errors, status: 500 unless @user.save
+    render json: @user, status: 201
   end
 
   def update
-    @user = User.find(params[:id])
+    @user = User.active.find_by(id: params[:id])
 
-    if @user.update_attributes(user_params)
-      render json: @user, status: 200
-    else
-      render json: @user.errors, status: 500
-    end
+    return render json: { error: 'User not found' }, status: 404 unless @user
+    return render json: @user.errors, status: 500 unless @user.update_attributes(user_params)
+    render json: @user, status: 200
   end
 
   def destroy
-    @user = User.find(params[:id])
+    @user = User.active.find_by(id: params[:id])
+
+    return render json: { error: 'User not found' }, status: 404 unless @user
+
     @user.deleted_at = Time.now
 
-    if @user.save
-      render json: @user, status: 200
-    else
-      render json: @user.errors, status: 500
-    end
+    return render json: @user.errors, status: 500 unless @user.save(validate: false)
+    render json: @user, status: 200
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
 end

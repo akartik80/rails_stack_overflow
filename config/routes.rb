@@ -3,4 +3,7 @@ Rails.application.routes.draw do
 
   resources :users
   resources :questions
+  resources :answers, only: [:create, :update, :destroy]
+
+
 end

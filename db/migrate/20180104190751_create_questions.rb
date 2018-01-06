@@ -5,7 +5,7 @@ class CreateQuestions < ActiveRecord::Migration[5.1]
       t.text :text, null: false
       t.integer :duplicate_question_id
       t.boolean :wiki, default: false
-      t.timestamp :deleted_at
+      t.timestamp :deleted_at, index: true
       t.timestamps
     end
   end
