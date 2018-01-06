@@ -1,6 +1,4 @@
 class QuestionsController < ApplicationController
-  skip_before_action :verify_authenticity_token # will remove this
-
   def index
     render json: Question.all, status: 200
   end

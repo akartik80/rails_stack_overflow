@@ -1,6 +1,4 @@
 class AnswersController < ApplicationController
-  skip_before_action :verify_authenticity_token # will remove this
-
   def create
     @answer = Answer.new(answer_params)
 
