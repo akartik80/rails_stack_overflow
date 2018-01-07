@@ -20,14 +20,14 @@ class Question < ApplicationRecord
     Revision.create(revisionable: self, metadata: { text: text })
   end
 
+  scope :active, -> { where(deleted_at: nil) }
+
   belongs_to :user
 
-  has_many :answers
-  has_many :comments, as: :commentable
-  has_many :votes, as: :votable
+  has_many :answers, -> { where(deleted_at: nil) }
+  has_many :comments, -> { where(deleted_at: nil) }, as: :commentable
+  has_many :votes, -> { where(deleted_at: nil) }, as: :votable
   has_many :revisions, as: :revisionable
 
   has_and_belongs_to_many :tags
-
-  scope :active, -> { where(deleted_at: nil) }
 end

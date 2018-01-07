@@ -43,7 +43,6 @@ class CommentsController < ApplicationController
     #require all these
     comment_params = params.require(:comment).permit(:text, :entity_type, :entity_id)
     comment_params[:user_id] = cookies.signed[:user_id]
-    # puts comment_params
     comment_params
   end
 end
