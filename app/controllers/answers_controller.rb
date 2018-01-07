@@ -21,15 +21,15 @@ class AnswersController < ApplicationController
   def destroy
     @answer.deleted_at = Time.now
 
-    return render json: @answer.errors, status: :internal_server_error unless @answer.save
-    render json: @answer, status: 200
+    return render json: @answer.errors, status: :internal_server_error unless @answer.save(validate: false)
+    render json: @answer, status: :ok
   end
 
   private
 
   # dry its call
   def answer_params
-    answer_params = params.require(:answer).permit(:text, :user_id, :question_id)
+    answer_params = params.require(:answer).permit(:text, :question_id)
     answer_params[:user_id] = cookies.signed[:user_id]
     answer_params
   end

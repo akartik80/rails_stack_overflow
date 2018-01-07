@@ -27,7 +27,7 @@ class UsersController < ApplicationController
 
   def update
     # could be due to server error, but will mostly be due to invalid params
-    return render json: user.errors, status: :bad_request unless @user.update_attributes(user_update_params)
+    return render json: @user.errors, status: :bad_request unless @user.update_attributes(user_update_params)
 
     render json: @user, status: :ok
   end
@@ -37,6 +37,8 @@ class UsersController < ApplicationController
 
     return render json: @user.errors, status: :internal_server_error unless @user.save(validate: false)
     render json: @user, status: 200
+    # @user.sessions.deleted_at = Time.now
+    # @user.sessions.save!
   end
 
   private
