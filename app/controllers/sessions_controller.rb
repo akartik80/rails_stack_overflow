@@ -18,16 +18,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    @session = current_session
-
-    if @session
-      @session[:deleted_at] = Time.now
-      return render json: { error: 'Error in logout' } unless @session.save
-    end
-
-    cookies.delete(:user_id)
-    cookies.delete(:session_id)
-    render json: { message: 'Successfully logged out' }, status: 200
+    return render json: { error: 'Error in logout' } unless logout?
+    render json: { message: 'Successfully logged out' }
   end
 
   private

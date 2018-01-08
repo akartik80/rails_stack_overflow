@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   before_action :validate_comment, only: %i[update destroy]
   before_action :validate_current_user, only: %i[update destroy]
-  before_action :find_entity, only: %i[create]
+  before_action :find_entity, only: %i[create update]
 
   def create
     comment = Comment.new({
@@ -38,7 +38,14 @@ class CommentsController < ApplicationController
   def comment_params
     #require all these
     comment_params = params.require(:comment).permit(:text, :entity_type, :entity_id)
-    comment_params[:user_id] = cookies.signed[:user_id]
+
+    if @comment
+      entity = @comment.commentable
+      comment_params[:entity_id] = entity.id
+      comment_params[:entity_type] = entity.class.to_s
+    end
+
+    comment_params[:user_id] = current_session[:user_id]
     comment_params
   end
 
@@ -53,6 +60,7 @@ class CommentsController < ApplicationController
 
   def find_entity
     @entity = find_active(comment_params[:entity_type].constantize, comment_params[:entity_id])
+
     render json: { error: "Invalid #{comment_params[:entity_type]}" }, status: :not_found unless @entity
   end
 end

@@ -1,14 +1,15 @@
 class AnswersController < ApplicationController
   before_action :validate_answer, only: %i[update destroy]
   before_action :validate_current_user, only: %i[update destroy]
+  before_action :validate_question, only: %i[create update]
 
   def create
     answer = Answer.new(answer_params)
 
     # could be due to server error, but will mostly be due to invalid params
-    return render json: answer.errors, status: :bad_request unless answer.save
+    return render json: answer.errors, status: :bad_request unless answer.save!
 
-    render json: answer, status: 201
+    render json: answer, status: :created
   end
 
   def update
@@ -30,7 +31,7 @@ class AnswersController < ApplicationController
   # dry its call
   def answer_params
     answer_params = params.require(:answer).permit(:text, :question_id)
-    answer_params[:user_id] = cookies.signed[:user_id]
+    answer_params[:user_id] = current_session.user_id
     answer_params
   end
 
@@ -41,5 +42,9 @@ class AnswersController < ApplicationController
 
   def validate_current_user
     check_current_user(@answer.user_id)
+  end
+
+  def validate_question
+    render json: { error: 'Invalid question' } unless find_active(Question, answer_params[:question_id])
   end
 end

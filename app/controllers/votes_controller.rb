@@ -29,7 +29,7 @@ class VotesController < ApplicationController
   def vote_params
     #require all these
     vote_params = params.require(:vote).permit(:vote_type, :entity_type, :entity_id)
-    vote_params[:user_id] = cookies.signed[:user_id]
+    vote_params[:user_id] = current_session[:user_id]
     vote_params
   end
 
