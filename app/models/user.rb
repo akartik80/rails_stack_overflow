@@ -18,15 +18,15 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 50 }, format: { with: VALID_EMAIL_REGEX },
             uniqueness: { case_sensitive: false }
 
-  has_many :questions, -> { where(deleted_at: nil) }
-  has_many :answers, -> { where(deleted_at: nil) }
-  has_many :comments, -> { where(deleted_at: nil) }
-  has_many :votes, -> { where(deleted_at: nil) }
-  has_many :sessions, -> { where(deleted_at: nil) }
+  has_many :questions
+  has_many :answers
+  has_many :comments
+  has_many :votes
+  has_many :sessions
 
   has_secure_password
 
-  scope :active, -> { where(deleted_at: nil) }
+  default_scope -> { where(deleted_at: nil) }
 
   before_save { self.email = email.downcase }
 end

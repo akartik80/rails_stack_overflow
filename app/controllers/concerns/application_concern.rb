@@ -2,12 +2,6 @@ module ApplicationConcern
   extend ActiveSupport::Concern
   include SessionsConcern
 
-  def find_active(model, id = nil)
-    active_records = model.active
-    active_records = active_records.find_by(id: id) if id
-    active_records
-  end
-
   private
 
   def require_login

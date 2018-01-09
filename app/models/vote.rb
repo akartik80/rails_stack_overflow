@@ -18,6 +18,8 @@ class Vote < ApplicationRecord
 
   after_save :create_revision
 
+  private
+
   def create_revision
     Revision.create(revisionable: self, metadata: { vote_type: vote_type })
   end

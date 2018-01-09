@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
   skip_before_action :require_login
 
   def create
-    @user = find_active(User).find_by(email: login_params[:email])
+    @user = User.find_by(email: login_params[:email])
     return render json: { error: 'User not found' }, status: :not_found unless @user
     return render json: { error: 'Wrong password' }, status: :ok unless @user.authenticate(login_params[:password])
 

@@ -22,9 +22,9 @@ class Answer < ApplicationRecord
 
   belongs_to :question
   belongs_to :user
-  has_many :votes, -> { where(deleted_at: nil) }, as: :votable
-  has_many :comments, -> { where(deleted_at: nil) }, as: :commentable
+  has_many :votes, as: :votable
+  has_many :comments, as: :commentable
   has_many :revisions, as: :revisionable
 
-  scope :active, -> { where(deleted_at: nil) } # @TODO how to dry this???
+  default_scope -> { where(deleted_at: nil) }
 end

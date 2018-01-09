@@ -6,11 +6,11 @@ class UsersController < ApplicationController
   before_action :validate_user, only: %i[update destroy]
 
   def index
-    render json: find_active(User), status: :ok
+    render json: User.all, status: :ok
   end
 
   def show
-    user = find_active(User, params[:id])
+    user = User.find_by(id: params[:id])
 
     return render json: { error: 'User not found' }, status: :not_found unless user
     render json: user, status: :ok
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
   end
 
   def validate_user
-    @user = find_active(User, params[:id])
+    @user = User.find_by(id: params[:id])
     render json: { error: 'User not found' }, status: :not_found unless @user
   end
 

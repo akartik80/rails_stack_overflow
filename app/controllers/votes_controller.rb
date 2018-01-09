@@ -34,7 +34,7 @@ class VotesController < ApplicationController
   end
 
   def validate_vote
-    @vote = find_active(Vote, params[:id])
+    @vote = Vote.find_by(id: params[:id])
     render json: { error: 'Vote not found' }, status: :not_found unless @vote
   end
 
@@ -43,7 +43,8 @@ class VotesController < ApplicationController
   end
 
   def find_entity
-    @entity = find_active(vote_params[:entity_type].constantize, vote_params[:entity_id])
+    # TODO: This relies on user params. Correct this
+    @entity = vote_params[:entity_type].constantize.find_by(id: vote_params[:entity_id])
     render json: { error: "Invalid #{vote_params[:entity_type]}" }, status: :not_found unless @entity
   end
 end

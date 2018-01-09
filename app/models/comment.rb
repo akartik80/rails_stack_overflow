@@ -21,7 +21,7 @@ class Comment < ApplicationRecord
     Revision.create(revisionable: self, metadata: { text: text })
   end
 
-  scope :active, -> { where(deleted_at: nil) }
+  default_scope -> { where(deleted_at: nil) }
 
   belongs_to :commentable, polymorphic: true
   belongs_to :user

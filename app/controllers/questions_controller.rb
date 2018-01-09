@@ -4,11 +4,11 @@ class QuestionsController < ApplicationController
   before_action :validate_current_user, only: %i[update destroy]
 
   def index
-    render json: find_active(Question), status: :ok
+    render json: Question.all, status: :ok
   end
 
   def show
-    question = find_active(Question).includes(:comments, answers: :comments).find_by(id: params[:id])
+    question = Question.includes(:comments, answers: :comments).find_by(id: params[:id])
 
     return render json: { error: 'Question not found' }, status: :not_found unless question
     render json: question, status: :ok
@@ -51,7 +51,7 @@ class QuestionsController < ApplicationController
   end
 
   def validate_question
-    @question = find_active(Question, params[:id])
+    @question = Question.find_by(id: params[:id])
     render json: {error: 'Question not found'}, status: :not_found unless @question
   end
 end

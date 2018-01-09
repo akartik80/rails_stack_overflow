@@ -36,8 +36,8 @@ class AnswersController < ApplicationController
   end
 
   def validate_answer
-    @answer = find_active(Answer, params[:id])
-    render json: {error: 'Answer not found'}, status: :not_found unless @answer
+    @answer = Answer.find_by(id: params[:id])
+    render json: { error: 'Answer not found' }, status: :not_found unless @answer
   end
 
   def validate_current_user
@@ -45,6 +45,6 @@ class AnswersController < ApplicationController
   end
 
   def validate_question
-    render json: { error: 'Invalid question' } unless find_active(Question, answer_params[:question_id])
+    render json: { error: 'Invalid question' } unless Question.find_by(id: answer_params[:question_id])
   end
 end

@@ -50,7 +50,7 @@ class CommentsController < ApplicationController
   end
 
   def validate_comment
-    @comment = find_active(Comment, params[:id])
+    @comment = Comment.find_by(id: params[:id])
     render json: {error: 'Comment not found'}, status: :not_found unless @comment
   end
 
@@ -59,8 +59,8 @@ class CommentsController < ApplicationController
   end
 
   def find_entity
-    @entity = find_active(comment_params[:entity_type].constantize, comment_params[:entity_id])
-
+    # TODO: This relies on user params. Correct this
+    @entity = comment_params[:entity_type].constantize.find_by(id: comment_params[:entity_id])
     render json: { error: "Invalid #{comment_params[:entity_type]}" }, status: :not_found unless @entity
   end
 end

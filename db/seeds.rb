@@ -6,13 +6,13 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-require_relative './seed_modules/seed_users.rb'
-require_relative './seed_modules/seed_questions.rb'
-require_relative './seed_modules/seed_answers.rb'
-require_relative './seed_modules/seed_tags.rb'
-require_relative './seed_modules/seed_votes_and_comments.rb'
-require_relative './seed_modules/seed_questions_tags.rb'
-require_relative './seed_modules/seed_sessions.rb'
+require_relative './seeds/seed_users.rb'
+require_relative './seeds/seed_questions.rb'
+require_relative './seeds/seed_answers.rb'
+require_relative './seeds/seed_tags.rb'
+require_relative './seeds/seed_votes_and_comments.rb'
+require_relative './seeds/seed_questions_tags.rb'
+require_relative './seeds/seed_sessions.rb'
 
 SeedUsers.seed
 SeedQuestions.seed
