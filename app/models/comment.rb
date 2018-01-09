@@ -13,17 +13,11 @@
 #
 
 class Comment < ApplicationRecord
-  validates_presence_of :commentable, :user
+  validates_presence_of :commentable, :user, :text
 
-  after_save :create_revision
-
-  def create_revision
-    Revision.create(revisionable: self, metadata: { text: text })
-  end
-
-  default_scope -> { where(deleted_at: nil) }
+  revisionable
+  soft_deletable
 
   belongs_to :commentable, polymorphic: true
   belongs_to :user
-  has_many :revisions, as: :revisionable
 end

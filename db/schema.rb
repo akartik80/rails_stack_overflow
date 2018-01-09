@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20180105142838) do
     t.string "commentable_type", null: false
     t.bigint "commentable_id", null: false
     t.bigint "user_id", null: false
-    t.text "text"
+    t.text "text", null: false
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

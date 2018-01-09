@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :comment do |f|
+  factory :question_comment, class: 'comment' do |f|
     f.text Faker::GameOfThrones.character
-    association :commentable
     user
+    association :commentable, factory: :question
   end
 end

@@ -56,6 +56,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'annotate'
 gem 'bcrypt'
 gem 'pg'
+gem 'database_cleaner'
 gem 'rspec-rails'
 gem 'factory_bot_rails'
 gem 'faker'

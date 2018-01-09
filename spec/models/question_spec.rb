@@ -5,13 +5,13 @@ describe Question do
     expect(question.save).to eq true
   end
 
-  context 'on deletion' do
-    it 'is not found' do
-      question.deleted_at = Time.now
-      question.save
-      expect { Question.find(question.id) }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
+  # context 'on deletion' do
+  #   it 'is not found' do
+  #     question.deleted_at = Time.now
+  #     question.save
+  #     expect { Question.find(question.id) }.to raise_error(ActiveRecord::RecordNotFound)
+  #   end
+  # end
 
   context 'on creation' do
     it 'creates revision' do

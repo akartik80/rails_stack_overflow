@@ -24,9 +24,9 @@ class User < ApplicationRecord
   has_many :votes
   has_many :sessions
 
+  revisionable
   has_secure_password
-
-  default_scope -> { where(deleted_at: nil) }
+  soft_deletable
 
   before_save { self.email = email.downcase }
 end

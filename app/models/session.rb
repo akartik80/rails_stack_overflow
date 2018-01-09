@@ -12,7 +12,8 @@
 
 class Session < ApplicationRecord
   validates_presence_of :user, :token
-  default_scope -> { where(deleted_at: nil) }
+
+  soft_deletable
 
   belongs_to :user
 end

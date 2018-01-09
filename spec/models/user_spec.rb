@@ -5,13 +5,13 @@ describe User do
     expect(user.save).to eq true
   end
 
-  context 'on deletion' do
-    it 'is not found' do
-      user.deleted_at = Time.now
-      user.save
-      expect { User.find(user.id) }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
+  # context 'on deletion' do
+  #   it 'is not found' do
+  #     user.deleted_at = Time.now
+  #     user.save
+  #     expect { User.find(user.id) }.to raise_error(ActiveRecord::RecordNotFound)
+  #   end
+  # end
 
   context 'on setting invalid attributes' do
     it 'is invalid without name' do
