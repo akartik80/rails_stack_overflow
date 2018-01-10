@@ -12,23 +12,19 @@ class UsersController < ApplicationController
   def show
     user = User.find_by(id: params[:id])
 
-    return render json: { error: 'User not found' }, status: :not_found unless user
+    return head :not_found unless user
     render json: user, status: :ok
   end
 
   def create
     user = User.new(user_create_params)
 
-    # could be due to server error, but will mostly be due to invalid params
     return render json: user.errors, status: :bad_request unless user.save
-
     render json: user, status: :created
   end
 
   def update
-    # could be due to server error, but will mostly be due to invalid params
     return render json: @user.errors, status: :bad_request unless @user.update_attributes(user_update_params)
-
     render json: @user, status: :ok
   end
 
