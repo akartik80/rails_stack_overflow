@@ -13,16 +13,14 @@
 #
 
 class Question < ApplicationRecord
-  validates_presence_of :user, :text
-
   revisionable
   commentable
   votable
   soft_deletable
 
+  validates_presence_of :user, :text
+
   belongs_to :user
-
   has_many :answers
-
   has_and_belongs_to_many :tags
 end

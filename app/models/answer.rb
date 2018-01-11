@@ -13,12 +13,12 @@
 #
 
 class Answer < ApplicationRecord
-  validates_presence_of :question, :user, :text
-
   revisionable
   commentable
   votable
   soft_deletable
+
+  validates_presence_of :question, :user, :text
 
   belongs_to :question
   belongs_to :user

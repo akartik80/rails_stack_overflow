@@ -13,10 +13,10 @@
 #
 
 class Comment < ApplicationRecord
-  validates_presence_of :commentable, :user, :text
-
   revisionable
   soft_deletable
+
+  validates_presence_of :commentable, :user, :text
 
   belongs_to :commentable, polymorphic: true
   belongs_to :user

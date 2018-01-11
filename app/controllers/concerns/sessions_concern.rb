@@ -1,18 +1,19 @@
 module SessionsConcern
+  def current_user
+    @current_user ||= current_session.try(:user)
+  end
+
   def current_session
-    cookie_session_id = cookies.signed[:session_id]
-    Session.find_by(token: cookie_session_id)
+    @current_session ||= Session.find_by(token: cookies.signed[:session_id])
   end
 
   def logout?
-    session = current_session
-
-    if session
-      session[:deleted_at] = Time.now
-      return false unless session.save!
+    if current_session.present?
+      # add expired_at instead
+      current_session.update_attributes!(deleted_at: Time.now)
     end
 
     cookies.delete(:session_id)
-    true
+    return true
   end
 end

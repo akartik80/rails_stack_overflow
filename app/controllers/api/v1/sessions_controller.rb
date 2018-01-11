@@ -1,5 +1,7 @@
-class SessionsController < ApplicationController
-  skip_before_action :require_login
+require_relative '../crud_controller'
+
+class Api::V1::SessionsController < CRUDController
+  skip_before_action :check_authentication
 
   def create
     @user = User.find_by(email: login_params[:email])

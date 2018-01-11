@@ -1,10 +1,10 @@
 require_relative '../concerns/spec_concern'
 
-describe UsersController do
+describe UsersController, type: :controller do
   include SpecConcern
 
-  let(:create_users) { FactoryBot.create_list(:user, 3) }
-  let(:create_user) { FactoryBot.create(:user) }
+  let(:users) { FactoryBot.create_list(:user, 3) }
+  let(:user) { FactoryBot.create(:user) }
 
   def create_session(user)
     FactoryBot.create(:session, user_id: user.id)
@@ -148,8 +148,8 @@ describe UsersController do
       end
     end
 
-    context 'user not logged in' do
-      it 'returns status 401 unauthorized' do
+    context 'User not logged in' do
+      it 'should respond with http status 401 unauthorized' do
         pending
         put :update, params: { id: @user[:id], user: get_user_put_params }
         expect(response).to have_http_status(:unauthorized)

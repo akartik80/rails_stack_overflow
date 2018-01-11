@@ -1,14 +1,16 @@
-class CommentsController < ApplicationController
+require_relative '../crud_controller'
+
+class Api::V1::CommentsController < CRUDController
   before_action :validate_comment, only: %i[update destroy]
   before_action :validate_current_user, only: %i[update destroy]
   before_action :find_entity, only: %i[create update]
 
   def create
-    comment = Comment.new({
+    comment = Comment.new(
       text: comment_params[:text],
       commentable: @entity,
       user: current_session.user
-    })
+    )
 
     # could be due to server error, but will mostly be due to invalid params
     return render json: comment.errors, status: :bad_request unless comment.save
@@ -50,7 +52,7 @@ class CommentsController < ApplicationController
   end
 
   def validate_comment
-    @comment = Comment.find_by(id: params[:id])
+    @comment = Comment.find(params[:id])
     render json: {error: 'Comment not found'}, status: :not_found unless @comment
   end
 
@@ -60,7 +62,7 @@ class CommentsController < ApplicationController
 
   def find_entity
     # TODO: This relies on user params. Correct this
-    @entity = comment_params[:entity_type].constantize.find_by(id: comment_params[:entity_id])
+    @entity = comment_params[:entity_type].constantize.find(comment_params[:entity_id])
     render json: { error: "Invalid #{comment_params[:entity_type]}" }, status: :not_found unless @entity
   end
 end

@@ -1,26 +1,19 @@
 class ApplicationRecord < ActiveRecord::Base
+  include Commentable
+  include Revisionable
+  include SoftDeletable
+  include Votable
+
   self.abstract_class = true
 
-  def self.revisionable
-    has_many :revisions, as: :revisionable
-    after_save :create_revision
+  alias really_destroy destroy
+  alias really_destroy! destroy!
+
+  def destroy
+    update_attributes(deleted_at: Time.now)
   end
 
-  def self.commentable
-    has_many :comments, as: :commentable
-  end
-
-  def self.votable
-    has_many :votes, as: :votable
-  end
-
-  def self.soft_deletable
-    default_scope -> { where(deleted_at: nil) }
-  end
-
-  private
-
-  def create_revision
-    Revision.create(revisionable: self, metadata: to_json(except: %i[id created_at updated_at]))
+  def destroy!
+    update_attributes!(deleted_at: Time.now)
   end
 end

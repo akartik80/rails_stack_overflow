@@ -1,5 +1,7 @@
-class UsersController < ApplicationController
-  skip_before_action :require_login, only: %i[index show create]
+require_relative '../crud_controller'
+
+class Api::V1::UsersController < CRUDController
+  skip_before_action :check_authentication, only: %i[index show create]
 
   before_action :require_logout, only: :create
   before_action :validate_current_user, only: %i[update destroy]
@@ -10,7 +12,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    user = User.find_by(id: params[:id])
+    user = User.find(params[:id])
 
     return head :not_found unless user
     render json: user, status: :ok
@@ -32,7 +34,7 @@ class UsersController < ApplicationController
     @user.deleted_at = Time.now
 
     return render json: @user.errors, status: :internal_server_error unless @user.save(validate: false)
-    render json: @user, status: 200
+    render json: @user, status: :ok
     # @user.sessions.deleted_at = Time.now
     # @user.sessions.save!
   end
@@ -48,7 +50,7 @@ class UsersController < ApplicationController
   end
 
   def validate_user
-    @user = User.find_by(id: params[:id])
+    @user = User.find(params[:id])
     render json: { error: 'User not found' }, status: :not_found unless @user
   end
 
