@@ -1,6 +1,5 @@
 module ApplicationConcern
   extend ActiveSupport::Concern
-  include SessionsConcern
 
   included do
     def check_authentication

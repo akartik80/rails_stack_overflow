@@ -4,7 +4,9 @@ class Api::V1::SessionsController < CRUDController
   skip_before_action :check_authentication
 
   def create
-    @user = User.find_by(email: login_params[:email])
+    p 'heree'
+    @user = User.find(params[:user_id])
+    p @user, 123
     return render json: { error: 'User not found' }, status: :not_found unless @user
     return render json: { error: 'Wrong password' }, status: :ok unless @user.authenticate(login_params[:password])
 

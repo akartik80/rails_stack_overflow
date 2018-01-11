@@ -3,31 +3,20 @@ require_relative '../crud_controller'
 class Api::V1::AnswersController < CRUDController
   private
 
-  def create_params
-    params.require(:answer).permit(:text, :question_id)
-  end
-
-  def update_params
+  def filtered_params
     params.require(:answer).permit(:text)
   end
 
-  def answer
-    answers.find(params[:id])
+  def read_model
+    return Question.find(params[:question_id]).answers if params[:question_id]
+    Answer.all
   end
 
-  def answers
-    current_user.answers
+  def create_model
+    current_user.answers.where(question_id: params[:question_id])
   end
 
-  def questions
-    current_user.questions
-  end
-
-  def question
-    questions.find(params[:question_id])
-  end
-
-  def model
-    Answer
+  def update_model
+    current_user.answers.find(params[:id]) if params[:id]
   end
 end

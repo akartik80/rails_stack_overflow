@@ -1,6 +1,6 @@
 require_relative '../concerns/spec_concern'
 
-describe UsersController, type: :controller do
+describe Api::V1::UsersController, type: :controller do
   include SpecConcern
 
   let(:users) { FactoryBot.create_list(:user, 3) }

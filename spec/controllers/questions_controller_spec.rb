@@ -1,6 +1,6 @@
 require_relative '../concerns/spec_concern'
 
-describe QuestionsController do
+describe Api::V1::QuestionsController do
   include SpecConcern
 
   let(:create_questions) { FactoryBot.create_list(:question, 3) }

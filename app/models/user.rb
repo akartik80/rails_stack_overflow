@@ -29,4 +29,14 @@ class User < ApplicationRecord
   has_many :sessions
 
   before_save { self.email = email.downcase }
+
+  def destroy
+    current_user.sessions.destroy
+    super()
+  end
+
+  def destroy!
+    sessions.each(&:destroy!)
+    super()
+  end
 end
