@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       end
 
       concern :votable do
-        resources :votes, shallow: true
+        resources :votes, except: :update, shallow: true
       end
 
       resources :users do

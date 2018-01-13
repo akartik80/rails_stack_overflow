@@ -10,7 +10,7 @@ class Api::V1::QuestionsController < CRUDController
   end
 
   def update_model
-    current_user.questions.find(params[:id]) if params[:id]
+    current_user.questions.find(params[:id])
   end
 
   def create_model

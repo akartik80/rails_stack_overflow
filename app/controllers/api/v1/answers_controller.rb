@@ -17,6 +17,6 @@ class Api::V1::AnswersController < CRUDController
   end
 
   def update_model
-    current_user.answers.find(params[:id]) if params[:id]
+    current_user.answers.find(params[:id])
   end
 end

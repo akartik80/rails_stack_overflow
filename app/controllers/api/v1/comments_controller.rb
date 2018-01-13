@@ -1,68 +1,25 @@
 require_relative '../crud_controller'
 
 class Api::V1::CommentsController < CRUDController
-  before_action :validate_comment, only: %i[update destroy]
-  before_action :validate_current_user, only: %i[update destroy]
-  before_action :find_entity, only: %i[create update]
-
-  def create
-    comment = Comment.new(
-      text: comment_params[:text],
-      commentable: @entity,
-      user: current_session.user
-    )
-
-    # could be due to server error, but will mostly be due to invalid params
-    return render json: comment.errors, status: :bad_request unless comment.save
-
-    render json: comment, status: :created
+  def read_model
+    return Question.find(params[:question_id]).comments if params[:question_id]
+    return Answer.find(params[:answer_id]).comments if params[:answer_id]
+    Comment.all
   end
 
-  def update
-    @comment.text = comment_params[:text]
-
-    # could be due to server error, but will mostly be due to invalid params
-    return render json: @comment.errors, status: :bad_request unless @comment.update_attributes({ text: comment_params[:text] })
-
-    render json: @comment, status: :ok
+  def create_model
+    model = params[:question_id] ? Question : Answer
+    entity = model.find(params[:question_id] || params[:answer_id])
+    current_user.comments.where(commentable: entity)
   end
 
-  def destroy
-    @comment.deleted_at = Time.now
-
-    return render json: @comment.errors, status: :internal_server_error unless @comment.save(validate: false)
-    render json: @comment, status: :ok
+  def update_model
+    current_user.comments.find(params[:id])
   end
 
   private
 
-  # call once
-  def comment_params
-    #require all these
-    comment_params = params.require(:comment).permit(:text, :entity_type, :entity_id)
-
-    if @comment
-      entity = @comment.commentable
-      comment_params[:entity_id] = entity.id
-      comment_params[:entity_type] = entity.class.to_s
-    end
-
-    comment_params[:user_id] = current_session[:user_id]
-    comment_params
-  end
-
-  def validate_comment
-    @comment = Comment.find(params[:id])
-    render json: {error: 'Comment not found'}, status: :not_found unless @comment
-  end
-
-  def validate_current_user
-    check_current_user(@comment.user_id)
-  end
-
-  def find_entity
-    # TODO: This relies on user params. Correct this
-    @entity = comment_params[:entity_type].constantize.find(comment_params[:entity_id])
-    render json: { error: "Invalid #{comment_params[:entity_type]}" }, status: :not_found unless @entity
+  def filtered_params
+    params.require(:comment).permit(:text)
   end
 end
