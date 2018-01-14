@@ -12,14 +12,14 @@ Rails.application.routes.draw do
       end
 
       resources :users do
-        resources :sessions, shallow: true
+        resources :sessions, shallow: true, except: :update
 
         resources :questions, shallow: true, concerns: [:commentable, :votable] do
           resources :answers, shallow: true, concerns: [:commentable, :votable]
         end
       end
 
-      resources :questions, only: [:index]
+      resources :questions, only: :index
     end
   end
 end

@@ -77,9 +77,11 @@ ActiveRecord::Schema.define(version: 20180105142838) do
     t.bigint "user_id", null: false
     t.string "token", null: false
     t.datetime "deleted_at"
+    t.datetime "expired_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["deleted_at"], name: "index_sessions_on_deleted_at"
+    t.index ["expired_at"], name: "index_sessions_on_expired_at"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 

@@ -1,3 +1,16 @@
+class Question < ApplicationRecord
+  revisionable
+  commentable
+  votable
+  soft_deletable
+
+  validates_presence_of :user, :text
+
+  belongs_to :user
+  has_many :answers
+  has_and_belongs_to_many :tags
+end
+
 # == Schema Information
 #
 # Table name: questions
@@ -11,16 +24,12 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #
-
-class Question < ApplicationRecord
-  revisionable
-  commentable
-  votable
-  soft_deletable
-
-  validates_presence_of :user, :text
-
-  belongs_to :user
-  has_many :answers
-  has_and_belongs_to_many :tags
-end
+# Indexes
+#
+#  index_questions_on_deleted_at  (deleted_at)
+#  index_questions_on_user_id     (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#

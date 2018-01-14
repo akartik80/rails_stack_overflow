@@ -9,6 +9,10 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
+# Indexes
+#
+#  index_revisions_on_revisionable_type_and_revisionable_id  (revisionable_type,revisionable_id)
+#
 
 require 'test_helper'
 

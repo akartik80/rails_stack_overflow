@@ -1,3 +1,9 @@
+class Tag < ApplicationRecord
+  validates_presence_of :text
+
+  has_and_belongs_to_many :questions
+end
+
 # == Schema Information
 #
 # Table name: tags
@@ -9,9 +15,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-
-class Tag < ApplicationRecord
-  validates_presence_of :text
-
-  has_and_belongs_to_many :questions
-end
+# Indexes
+#
+#  index_tags_on_deleted_at  (deleted_at)
+#

@@ -11,6 +11,17 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
+# Indexes
+#
+#  index_votes_on_deleted_at                   (deleted_at)
+#  index_votes_on_user_id                      (user_id)
+#  index_votes_on_votable_type_and_votable_id  (votable_type,votable_id)
+#  index_votes_on_vote_type                    (vote_type)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 
 require 'test_helper'
 

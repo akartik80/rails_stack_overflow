@@ -1,3 +1,9 @@
+class Revision < ApplicationRecord
+  validates_presence_of :revisionable
+
+  belongs_to :revisionable, polymorphic: true
+end
+
 # == Schema Information
 #
 # Table name: revisions
@@ -9,9 +15,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
-
-class Revision < ApplicationRecord
-  validates_presence_of :revisionable
-
-  belongs_to :revisionable, polymorphic: true
-end
+# Indexes
+#
+#  index_revisions_on_revisionable_type_and_revisionable_id  (revisionable_type,revisionable_id)
+#
