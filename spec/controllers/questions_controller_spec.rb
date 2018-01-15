@@ -7,10 +7,10 @@ describe Api::V1::QuestionsController, type: :controller do
   let(:create_question) { FactoryBot.create(:question) }
   let(:create_user) { FactoryBot.create(:user) }
 
-  let(:get_question_post_params) {
+  def question_post_params
     fake_password = Faker::Internet.password
 
-    {
+    return {
       question: {
         name: Faker::Internet.name,
         email: Faker::Internet.email,
@@ -18,14 +18,14 @@ describe Api::V1::QuestionsController, type: :controller do
         password_confirmation: fake_password
       }
     }
-  }
+  end
 
-  let(:get_question_put_params) {
-    {
+  def question_put_params
+    return {
       name: Faker::GameOfThrones.character,
       email: Faker::Internet.email
     }
-  }
+  end
 
   def create_session(user)
     FactoryBot.create(:session, user_id: user.id)
@@ -105,7 +105,7 @@ describe Api::V1::QuestionsController, type: :controller do
         # parameter existence validation
         it "returns status 400 bad request if question parameter does not contain #{param}" do
           # pending
-          question_params = get_question_post_params
+          question_params = question_post_params
           question_params[param] = nil
           post :create, params: question_params
           expect(response).to have_http_status(:bad_request)
@@ -114,7 +114,7 @@ describe Api::V1::QuestionsController, type: :controller do
         # parameter type validations
         it "returns status 400 bad request if question parameter contains non string #{param}" do
           # pending
-          question_params = get_question_post_params
+          question_params = question_post_params
           question_params[param] = Faker::Number.between(1, 10)
           post :create, params: question_params
           expect(response).to have_http_status(:bad_request)
@@ -123,7 +123,7 @@ describe Api::V1::QuestionsController, type: :controller do
 
       # extra parameter test
       it 'does not delete question if deleted_at parameter is sent' do
-        question_params = get_question_post_params
+        question_params = question_post_params
         question_params[:deleted_at] = Time.now
         post :create, params: question_params
         expect(response).to have_http_status(:created)
@@ -133,7 +133,7 @@ describe Api::V1::QuestionsController, type: :controller do
 
     # context 'valid parameters' do
     #   it 'creates question successfully' do
-    #     question_post_params = get_question_post_params
+    #     question_post_params = question_post_params
     #     post :create, params: question_post_params
     #     expect(response).to have_http_status(:created)
     #

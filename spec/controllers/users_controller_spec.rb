@@ -10,10 +10,10 @@ describe Api::V1::UsersController, type: :controller do
     FactoryBot.create(:session, user_id: user.id)
   end
 
-  let(:get_user_post_params) {
+  def user_params
     fake_password = Faker::Internet.password
 
-    {
+    return {
       user: {
         name: Faker::Internet.name,
         email: Faker::Internet.email,
@@ -21,14 +21,7 @@ describe Api::V1::UsersController, type: :controller do
         password_confirmation: fake_password
       }
     }
-  }
-
-  let(:get_user_put_params) {
-    {
-      name: Faker::GameOfThrones.character,
-      email: Faker::Internet.email
-    }
-  }
+  end
 
   describe 'GET #index' do
     let(:get_users) { get :index, format: :json }
@@ -98,7 +91,7 @@ describe Api::V1::UsersController, type: :controller do
         # parameter existence validation
         it "returns status 400 bad request if user parameter does not contain #{param}" do
           pending
-          user_params = get_user_post_params
+          user_params = user_params
           user_params[param] = nil
           post :create, params: user_params
           expect(response).to have_http_status(:bad_request)
@@ -107,7 +100,7 @@ describe Api::V1::UsersController, type: :controller do
         # parameter type validations
         it "returns status 400 bad request if user parameter contains non string #{param}" do
           pending
-          user_params = get_user_post_params
+          user_params = user_params
           user_params[param] = Faker::Number.between(1, 10)
           post :create, params: user_params
           expect(response).to have_http_status(:bad_request)
@@ -116,7 +109,7 @@ describe Api::V1::UsersController, type: :controller do
 
       # extra parameter test
       it 'does not delete user if deleted_at parameter is sent' do
-        user_params = get_user_post_params
+        user_params = user_params
         user_params[:deleted_at] = Time.now
         post :create, params: user_params
         expect(response).to have_http_status(:created)
@@ -126,13 +119,13 @@ describe Api::V1::UsersController, type: :controller do
 
     context 'valid parameters' do
       it 'creates user successfully' do
-        user_post_params = get_user_post_params
-        post :create, params: user_post_params
+        user_params = user_params
+        post :create, params: user_params
         expect(response).to have_http_status(:created)
 
         parsed_response = json(response.body)
-        expect(parsed_response[:name]).to eq user_post_params[:user][:name]
-        expect(parsed_response[:email]).to eq user_post_params[:user][:email]
+        expect(parsed_response[:name]).to eq user_params[:user][:name]
+        expect(parsed_response[:email]).to eq user_params[:user][:email]
       end
     end
   end
