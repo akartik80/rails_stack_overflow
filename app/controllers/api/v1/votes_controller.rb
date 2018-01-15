@@ -1,24 +1,25 @@
-require_relative '../crud_controller'
-
 class Api::V1::VotesController < CrudController
-  def read_model
-    return Question.find(params[:question_id]).votes if params[:question_id]
-    return Answer.find(params[:answer_id]).votes if params[:answer_id]
-    Vote.all
+  def model
+    Vote
+  end
+
+  def index
+    return render json: Question.find(params[:question_id]).votes, status: :ok if params[:question_id]
+    render json: Answer.find(params[:answer_id]).votes, status: :ok
   end
 
   def create
-    return update if update_model
-    super
+    return update if current_user.votes.find_by(votable: entity)
+    render json: current_user.votes.where(votable: entity).create!(filtered_params), status: :created
   end
 
-  def update_model
-    return current_user.votes.find(params[:id]) if params[:id] # for destroy
-    current_user.votes.find_by(votable: entity)
+  def update
+    render json: current_vote.tap { |vote| vote.update_attributes!(filtered_params) }, status: :ok
   end
 
-  def create_model
-    current_user.votes.where(votable: entity)
+  def destroy
+    current_vote.destroy!
+    render json: current_vote, status: :ok
   end
 
   private
@@ -30,5 +31,10 @@ class Api::V1::VotesController < CrudController
 
   def filtered_params
     params.require(:vote).permit(:vote_type)
+  end
+
+  def current_vote
+    return @current_vote ||= current_user.votes.find(params[:id]) if params[:id]
+    @current_vote ||= current_user.votes.find_by(votable: entity)
   end
 end

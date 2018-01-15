@@ -1,5 +1,3 @@
-require_relative '../crud_controller'
-
 class Api::V1::SessionsController < CrudController
   skip_before_action :check_authentication
 

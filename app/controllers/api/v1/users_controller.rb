@@ -1,25 +1,38 @@
-require_relative '../crud_controller'
+# controller actions for User resource
+module Api::V1
+  class UsersController < CrudController
+    # auth is not required for showing user profile and signup
+    skip_before_action :check_authentication, only: %i[index show create]
 
-class Api::V1::UsersController < CrudController
-  skip_before_action :check_authentication, only: %i[index show create]
+    # logged in user can't sign up
+    before_action :require_logout, only: :create
 
-  before_action :require_logout, only: :create
+    # defines model for current controller
+    # @return [model] model for the current controller
+    def model
+      User
+    end
 
-  def read_model
-    User.all
-  end
+    # updates current user
+    # @return [json] updated user
+    def update
+      current_user.update_attributes!(filtered_params)
+      render json: current_user, status: :ok
+    end
 
-  def create_model
-    User
-  end
+    # deletes current user
+    # @return [json] deleted user
+    def destroy
+      current_user.destroy!
+      render json: current_user, status: :ok
+    end
 
-  def update_model
-    current_user
-  end
+    private
 
-  private
-
-  def filtered_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    # whitelist params
+    # @return [hash] whitelisted params hash
+    def filtered_params
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    end
   end
 end
