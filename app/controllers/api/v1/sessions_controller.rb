@@ -3,12 +3,16 @@ class Api::V1::SessionsController < CrudController
 
   def create
     return render json: current_session, status: :ok if current_session
-    render json: Session.create!(user: authenticated_user, token: signed_cookie), status: :created
+    user_authenticator = UserAuthenticator.new(filtered_params)
+
+    render json: Session.create!(
+      user: user_authenticator.authenticated_user,
+      token: signed_cookie
+    ), status: :created
   end
 
   def destroy
-    logout
-    head :ok
+    render json: UserAuthenticator.logout(current_session, cookies), status: :ok
   end
 
   private
@@ -17,14 +21,7 @@ class Api::V1::SessionsController < CrudController
     params.require(:user).permit(:email, :password)
   end
 
-  def authenticated_user
-    user = User.find_by(email: filtered_params[:email])
-    raise ActiveRecord::RecordNotFound unless user
-    raise WrongPasswordError.new('Password is incorrect') unless user.authenticate(filtered_params[:password])
-    return user
-  end
-
   def signed_cookie
-    cookies.signed[:session_id] = session_token
+    cookies.signed[:session_id] = SessionGenerator.generate
   end
 end
