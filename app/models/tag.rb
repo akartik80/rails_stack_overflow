@@ -1,4 +1,6 @@
 class Tag < ApplicationRecord
+  soft_deletable
+
   validates_presence_of :text
 
   has_and_belongs_to_many :questions

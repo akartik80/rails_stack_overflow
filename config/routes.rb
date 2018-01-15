@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       end
 
       resources :users do
-        resources :sessions, shallow: true, except: :update
+        resources :sessions, shallow: true, only: :destroy
 
         resources :questions, shallow: true, concerns: [:commentable, :votable] do
           resources :answers, shallow: true, concerns: [:commentable, :votable]
@@ -20,6 +20,8 @@ Rails.application.routes.draw do
       end
 
       resources :questions, only: :index
+      resources :sessions, only: :create
+      resources :tags
     end
   end
 end

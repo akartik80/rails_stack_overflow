@@ -1,5 +1,5 @@
 class Session < ApplicationRecord
-  soft_deletable
+  default_scope -> { where(deleted_at: nil, expired_at: nil) }
 
   validates_presence_of :user, :token
 

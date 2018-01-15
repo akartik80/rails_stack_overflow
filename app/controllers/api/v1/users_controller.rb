@@ -1,6 +1,6 @@
 require_relative '../crud_controller'
 
-class Api::V1::UsersController < CRUDController
+class Api::V1::UsersController < CrudController
   skip_before_action :check_authentication, only: %i[index show create]
 
   before_action :require_logout, only: :create

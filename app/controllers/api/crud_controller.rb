@@ -1,4 +1,4 @@
-class CRUDController < ApplicationController
+class CrudController < ApplicationController
   def index
     render json: read_model, status: :ok
   end
@@ -18,6 +18,10 @@ class CRUDController < ApplicationController
 
   def destroy
     update_model.destroy!
-    head :ok
+    render json: update_model, status: :ok
+  end
+
+  def filtered_params
+    # not_implemented
   end
 end

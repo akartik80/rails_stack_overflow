@@ -1,6 +1,6 @@
 require_relative '../crud_controller'
 
-class Api::V1::VotesController < CRUDController
+class Api::V1::VotesController < CrudController
   def read_model
     return Question.find(params[:question_id]).votes if params[:question_id]
     return Answer.find(params[:answer_id]).votes if params[:answer_id]

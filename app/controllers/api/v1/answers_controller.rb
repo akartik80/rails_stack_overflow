@@ -1,6 +1,6 @@
 require_relative '../crud_controller'
 
-class Api::V1::AnswersController < CRUDController
+class Api::V1::AnswersController < CrudController
   private
 
   def filtered_params

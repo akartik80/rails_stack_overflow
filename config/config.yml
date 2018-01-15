@@ -1,0 +1,13 @@
+# config/config.yml
+
+default: &default
+  session_id_length: 20
+
+production:
+  <<: *default
+
+development:
+  <<: *default
+
+test:
+  <<: *default

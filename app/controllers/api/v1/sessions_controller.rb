@@ -1,34 +1,32 @@
 require_relative '../crud_controller'
 
-class Api::V1::SessionsController < CRUDController
+class Api::V1::SessionsController < CrudController
   skip_before_action :check_authentication
 
   def create
-    p 'heree'
-    @user = User.find(params[:user_id])
-    p @user, 123
-    return render json: { error: 'User not found' }, status: :not_found unless @user
-    return render json: { error: 'Wrong password' }, status: :ok unless @user.authenticate(login_params[:password])
-
-    cookies.signed[:session_id] = SecureRandom.hex(20)
-
-    render json: Session.create!(user_id: @user.id, token: cookies.signed[:session_id]), status: :created
-  end
-
-  def login
-    # redirect here with 302
     return render json: current_session, status: :ok if current_session
-    create
+    render json: Session.create!(user: authenticated_user, token: signed_cookie), status: :created
   end
 
   def destroy
-    return render json: { error: 'Error in logout' } unless logout?
-    render json: { message: 'Successfully logged out' }
+    logout
+    head :ok
   end
 
   private
 
-  def login_params
+  def filtered_params
     params.require(:user).permit(:email, :password)
+  end
+
+  def authenticated_user
+    user = User.find_by(email: filtered_params[:email])
+    raise ActiveRecord::RecordNotFound unless user
+    raise WrongPasswordError.new('Password is incorrect') unless user.authenticate(filtered_params[:password])
+    return user
+  end
+
+  def signed_cookie
+    cookies.signed[:session_id] = session_token
   end
 end

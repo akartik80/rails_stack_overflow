@@ -1,6 +1,6 @@
 require_relative '../crud_controller'
 
-class Api::V1::CommentsController < CRUDController
+class Api::V1::CommentsController < CrudController
   def read_model
     return Question.find(params[:question_id]).comments if params[:question_id]
     return Answer.find(params[:answer_id]).comments if params[:answer_id]
