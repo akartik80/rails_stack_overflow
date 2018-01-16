@@ -17,10 +17,6 @@ class Api::V1::AnswersController < CrudController
     render json: current_answer, status: :ok
   end
 
-  def model
-    Answer
-  end
-
   private
 
   def current_answer
@@ -29,5 +25,9 @@ class Api::V1::AnswersController < CrudController
 
   def filtered_params
     params.require(:answer).permit(:text)
+  end
+
+  def model
+    Answer
   end
 end

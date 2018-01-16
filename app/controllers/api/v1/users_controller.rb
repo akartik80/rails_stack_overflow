@@ -7,12 +7,6 @@ module Api::V1
     # logged in user can't sign up
     before_action :require_logout, only: :create
 
-    # defines model for current controller
-    # @return [model] model for the current controller
-    def model
-      User
-    end
-
     # updates current user
     # @return [json] updated user
     def update
@@ -28,6 +22,12 @@ module Api::V1
     end
 
     private
+
+    # defines model for current controller
+    # @return [model] model for the current controller
+    def model
+      User
+    end
 
     # whitelist params
     # @return [hash] whitelisted params hash

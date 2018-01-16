@@ -1,8 +1,4 @@
 class Api::V1::CommentsController < CrudController
-  def model
-    Comment
-  end
-
   def index
     return render json: Question.find(params[:question_id]).comments, status: :ok if params[:question_id]
     render json: Answer.find(params[:answer_id]).comments, status: :ok
@@ -22,6 +18,10 @@ class Api::V1::CommentsController < CrudController
   end
 
   private
+
+  def model
+    Comment
+  end
 
   def entity
     @model ||= params[:question_id] ? Question : Answer

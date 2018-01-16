@@ -1,8 +1,4 @@
 class Api::V1::VotesController < CrudController
-  def model
-    Vote
-  end
-
   def index
     return render json: Question.find(params[:question_id]).votes, status: :ok if params[:question_id]
     render json: Answer.find(params[:answer_id]).votes, status: :ok
@@ -27,6 +23,10 @@ class Api::V1::VotesController < CrudController
   def entity
     @model ||= params[:question_id] ? Question : Answer
     @entity ||= @model.find(params[:question_id] || params[:answer_id])
+  end
+
+  def model
+    Vote
   end
 
   def filtered_params

@@ -2,12 +2,6 @@ class Api::V1::QuestionsController < CrudController
   # auth is not required for showing questions
   skip_before_action :check_authentication, only: [:index, :show]
 
-  # defines model for current controller
-  # @return [model] model for the current controller
-  def model
-    Question
-  end
-
   # renders current user's questions if user_id is given, else calls super
   # @return [json] questions
   def index
@@ -43,6 +37,12 @@ class Api::V1::QuestionsController < CrudController
   end
 
   private
+
+  # defines model for current controller
+  # @return [model] model for the current controller
+  def model
+    Question
+  end
 
   # whitelist params
   # @return [hash] whitelisted params hash
